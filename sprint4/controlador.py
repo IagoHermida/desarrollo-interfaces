@@ -23,7 +23,7 @@ class GameController:
         # Pedir al jugador que elija una dificultad
         difficulty = simpledialog.askstring("Dificultad", "Elige: fácil, medio o difícil:")
         if difficulty in ["fácil", "medio", "difícil"]:
-            # Solo pedir el nombre una vez aquí
+            # Pedir el nombre aquí
             player_name = self.main_menu.ask_player_name()
             if player_name:
                 # Aquí pasamos el nombre directamente sin volver a pedirlo
