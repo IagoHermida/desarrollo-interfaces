@@ -1,10 +1,14 @@
 package com.example.proyectofirebase;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +27,8 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
+        SharedPreferences sharedPref = getSharedPreferences("AppConfig", Context.MODE_PRIVATE);
+        boolean darkMode = sharedPref.getBoolean("darkMode", false);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -50,6 +55,30 @@ public class DashboardActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
             finish();
+        });
+        if (darkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        //super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_dashboard);
+        Button themeButton = findViewById(R.id.themeButton);
+        themeButton.setOnClickListener(view -> {
+            boolean isDarkMode = sharedPref.getBoolean("darkMode", false);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("darkMode", !isDarkMode);
+            editor.apply();
+
+            // Cambiar el tema dinámicamente
+            if (!isDarkMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+           } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+
+            // Recrea la actividad para aplicar los cambios
+        //    recreate();
         });
     }
 }
