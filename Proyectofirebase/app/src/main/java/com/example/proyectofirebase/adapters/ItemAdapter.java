@@ -39,7 +39,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         Item item = items.get(position);
         holder.titleTextView.setText(item.getNombre());
         Glide.with(context).load(item.getImagenUrl()).into(holder.imageView);
-
+        holder.imageView.setContentDescription(item.getNombre());
         // Detecta el clic en el item
         holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(item));
     }

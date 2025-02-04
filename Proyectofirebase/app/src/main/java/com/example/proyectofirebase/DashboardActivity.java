@@ -36,6 +36,7 @@ public class DashboardActivity extends AppCompatActivity {
                 public void onItemClick(Item item) {
                     // Pasamos los datos a DetailActivity
                     Intent intent = new Intent(DashboardActivity.this, DetailActivity.class);
+                    intent.putExtra("itemId", item.getId());
                     intent.putExtra("productTitle", item.getNombre());
                     intent.putExtra("productDescription", item.getDescripcion());
                     intent.putExtra("imageUrl", item.getImagenUrl());

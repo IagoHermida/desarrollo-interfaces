@@ -19,6 +19,10 @@ public class DashboardViewModel extends ViewModel {
         repository.obtenerItems(itemsLiveData);
     }
 
+    private void cargarItems() {
+        repository.obtenerItems(itemsLiveData);
+    }
+
     public LiveData<List<Item>> getItemsLiveData() {
         return itemsLiveData;
     }

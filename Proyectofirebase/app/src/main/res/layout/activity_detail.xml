@@ -41,4 +41,22 @@
         app:layout_constraintRight_toRightOf="parent"
         android:padding="16dp"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_favorite_border"
+        app:backgroundTint="@color/primary"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/buttonGoToFavorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ver Favoritos"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
