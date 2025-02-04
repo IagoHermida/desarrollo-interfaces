@@ -2,6 +2,7 @@ package com.example.proyectofirebase;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,15 +88,22 @@ public class FavouritesActivity extends AppCompatActivity {
     }
 
     private void obtenerDetallesProducto(String productId) {
-        // Obtiene los detalles completos del producto con el ID
         DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("productos").child(productId);
         productRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Item item = snapshot.getValue(Item.class);
-                if (item != null) {
-                    favoritosList.add(item);
-                    adapter.notifyDataSetChanged();  // Actualiza el RecyclerView
+                if (snapshot.exists()) {
+                    Item item = snapshot.getValue(Item.class);
+                    if (item != null) {
+                        Log.d("FavouritesActivity", "Producto encontrado: " + item.getNombre() + " - Imagen: " + item.getImagenUrl());
+
+                        favoritosList.add(item);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Log.e("FavouritesActivity", "Item es NULL para ID: " + productId);
+                    }
+                } else {
+                    Log.e("FavouritesActivity", "Snapshot no existe para ID: " + productId);
                 }
             }
 
@@ -105,4 +113,5 @@ public class FavouritesActivity extends AppCompatActivity {
             }
         });
     }
+
 }
