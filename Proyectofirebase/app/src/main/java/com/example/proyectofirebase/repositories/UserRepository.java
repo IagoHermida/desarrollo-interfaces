@@ -59,11 +59,23 @@ public class UserRepository {
                 });
     }
     public void agregarAFavoritos(String itemId) {
-        databaseRef.child(itemId).setValue(true);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtiene el ID del usuario autenticado
+        DatabaseReference favoritosRef = FirebaseDatabase.getInstance().getReference("users")
+                .child(userId)
+                .child("favoritos")
+                .child(itemId);
+
+        favoritosRef.setValue(true);
     }
 
     public void eliminarDeFavoritos(String itemId) {
-        databaseRef.child(itemId).removeValue();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference favoritosRef = FirebaseDatabase.getInstance().getReference("users")
+                .child(userId)
+                .child("favoritos")
+                .child(itemId);
+
+        favoritosRef.removeValue();
     }
 
     public void verificarFavorito(String itemId, ValueEventListener listener) {
