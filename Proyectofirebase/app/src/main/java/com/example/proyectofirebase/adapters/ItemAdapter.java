@@ -1,6 +1,7 @@
 package com.example.proyectofirebase.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         Item item = items.get(position);
+        Log.d("ItemAdapter", "Item en la posición " + position + ": " + item.getNombre());
         holder.titleTextView.setText(item.getNombre());
         Glide.with(context).load(item.getImagenUrl()).into(holder.imageView);
         holder.imageView.setContentDescription(item.getNombre());

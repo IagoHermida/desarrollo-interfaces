@@ -1,5 +1,7 @@
 package com.example.proyectofirebase.models;
 
+import com.google.firebase.database.PropertyName;
+
 public class Item {
     private String id;
     private String nombre;
@@ -17,7 +19,11 @@ public class Item {
     }
 
     public String getId() { return id; }
+    @PropertyName("producto")
     public String getNombre() { return nombre; }
+    @PropertyName("descripcion")
     public String getDescripcion() { return descripcion; }
+    @PropertyName("imagen")
     public String getImagenUrl() { return imagenUrl; }
+
 }

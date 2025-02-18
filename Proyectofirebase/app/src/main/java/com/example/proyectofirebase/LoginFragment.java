@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyectofirebase.viewmodels.LoginViewModel;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginFragment extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private EditText emailEditText, passwordEditText;
@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.fragment_login);
 
         // Inicializar vistas
         emailEditText = findViewById(R.id.emailEditText);
@@ -44,12 +44,12 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.isLoggedIn().observe(this, isLoggedIn -> {
             if (isLoggedIn) {
                 // Si el inicio de sesión es exitoso, pasa a la siguiente actividad
-                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                startActivity(new Intent(LoginFragment.this, DashboardFragment.class));
 
                 finish();
             } else {
                 // Si hay un error, muestra el mensaje de error
-                Toast.makeText(LoginActivity.this, loginViewModel.getErrorMessage().getValue(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginFragment.this, loginViewModel.getErrorMessage().getValue(), Toast.LENGTH_SHORT).show();
             }
             progressBar.setVisibility(View.GONE);
         });
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         // Observar el mensaje de error
         loginViewModel.getErrorMessage().observe(this, error -> {
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginFragment.this, error, Toast.LENGTH_SHORT).show();
         });
 
         // Manejar el click en el botón de login
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
             // Validar los campos
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Por favor, ingresa los datos correctamente.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginFragment.this, "Por favor, ingresa los datos correctamente.", Toast.LENGTH_SHORT).show();
             } else {
                 // Iniciar sesión
                 progressBar.setVisibility(View.VISIBLE);
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         registerButton.setOnClickListener(v -> {
             // Redirige a la pantalla de registro
-            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            startActivity(new Intent(LoginFragment.this, RegisterFragment.class));
         });
     }
 }

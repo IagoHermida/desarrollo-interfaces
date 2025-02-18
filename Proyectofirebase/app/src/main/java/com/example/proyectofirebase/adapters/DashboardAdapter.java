@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.proyectofirebase.DetailActivity;
+import com.example.proyectofirebase.DetailFragment;
 import com.example.proyectofirebase.R;
 import com.example.proyectofirebase.models.Item;
 
@@ -47,7 +47,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         // Agregar el click listener
         holder.itemView.setOnClickListener(v -> {
             // Crear un Intent para abrir DetailActivity
-            Intent intent = new Intent(context, DetailActivity.class);
+            Intent intent = new Intent(context, DetailFragment.class);
             // Pasar los datos del producto a DetailActivity
             intent.putExtra("title", product.getNombre());
             intent.putExtra("description", product.getDescripcion());

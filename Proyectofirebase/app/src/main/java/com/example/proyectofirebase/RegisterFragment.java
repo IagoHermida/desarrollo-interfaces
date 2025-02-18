@@ -9,13 +9,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proyectofirebase.viewmodels.RegisterViewModel;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterFragment extends AppCompatActivity {
     private RegisterViewModel registerViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.fragment_register);
 
         // Inicializamos el RegisterViewModel
         registerViewModel = new RegisterViewModel();
@@ -28,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Observamos el estado de registro del usuario
         registerViewModel.getIsSuccessful().observe(this, isSuccessful -> {
             if (isSuccessful != null && isSuccessful) {
-                Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterFragment.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                 // Aquí puedes redirigir a la actividad principal o de login
             }
         });
@@ -36,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Observamos los errores
         registerViewModel.getErrorMessage().observe(this, errorMessage -> {
             if (errorMessage != null) {
-                Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterFragment.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
 
