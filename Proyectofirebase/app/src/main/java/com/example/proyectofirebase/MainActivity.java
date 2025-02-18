@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void logoutUser() {
         FirebaseAuth.getInstance().signOut();
         // Redireccionar a LoginActivity
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginFragment.class);
         startActivity(intent);
         finish(); // Para que no pueda volver con el botón atrás
     }
