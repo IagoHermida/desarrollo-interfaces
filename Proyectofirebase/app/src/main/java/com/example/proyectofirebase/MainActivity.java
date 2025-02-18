@@ -1,11 +1,8 @@
 package com.example.proyectofirebase;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,9 +34,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             } else if (item.getItemId() == R.id.nav_logout) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this, LoginFragment.class));
-                finish();
+                logoutUser();
+                return true;
             }
 
             if (selectedFragment != null) {
@@ -56,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragmentContainer, fragment);
         transaction.commit();
     }
+
     private void logoutUser() {
         FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, LoginFragment.class);
-        startActivity(intent);
-        finish();  // Cierra la actividad actual para evitar que el usuario regrese con "atrás"
-    }
 
+        // Reemplazar el fragmento de inicio de sesión
+        LoginFragment loginFragment = new LoginFragment();
+        replaceFragment(loginFragment); // Reemplaza el fragmento actual por LoginFragment
+    }
 }

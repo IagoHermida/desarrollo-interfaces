@@ -14,18 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoFirebase"
         tools:targetApi="31">
-        <activity
-            android:name=".LoginFragment"
-            android:exported="false" />
-        <activity
-            android:name=".FavouritesFragment"
-            android:exported="false" />
-        <activity
-            android:name=".DetailFragment"
-            android:exported="false" />
-        <activity
-            android:name=".DashboardFragment"
-            android:exported="false" />
+
+        <!-- MainActivity debe estar declarada en el manifiesto -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -33,13 +23,11 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegisterFragment"
-            android:exported="false" />
+
+
     </application>
 
 </manifest>
