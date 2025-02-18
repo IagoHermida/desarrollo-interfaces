@@ -1,6 +1,7 @@
 package com.example.proyectofirebase;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class DashboardFragment extends Fragment {
     private ItemAdapter adapter;
     private List<Item> itemList;
     private DatabaseReference productosRef;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar; // Variable de instancia
     private DashboardViewModel viewModel;
 
     @Override
@@ -39,6 +40,8 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
+        // Utilizamos la variable de instancia
+        progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -71,11 +74,20 @@ public class DashboardFragment extends Fragment {
 
         // Observar cambios en la lista de productos
         viewModel.getItemsLiveData().observe(getViewLifecycleOwner(), items -> {
-            itemList.clear();
-            itemList.addAll(items);
-            adapter.notifyDataSetChanged();
-            progressBar.setVisibility(View.GONE);
+            if (items != null) {
+                itemList.clear();
+                itemList.addAll(items);  // Solo agregamos si 'items' no es null
+                adapter.notifyDataSetChanged();
+            } else {
+                Log.e("DashboardFragment", "Los datos de los items son null");
+            }
+
+            // Ocultar la barra de progreso
+            if (progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+            }
         });
+
 
         cargarProductos(); // Cargar los productos de Firebase
 
@@ -83,8 +95,13 @@ public class DashboardFragment extends Fragment {
     }
 
     private void cargarProductos() {
+
         productosRef = FirebaseDatabase.getInstance().getReference("productos");
-        progressBar.setVisibility(View.VISIBLE);
+
+        // Asegurarse de que el ProgressBar no es null antes de modificarlo
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);  // Hacer visible el ProgressBar
+        }
 
         productosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -97,15 +114,20 @@ public class DashboardFragment extends Fragment {
                     }
                 }
                 adapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
+                // Asegurarse de que el ProgressBar no es null antes de modificarlo
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);  // Esconder el ProgressBar después de cargar los datos
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getContext(), "Error al cargar los productos", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
+                // Asegurarse de que el ProgressBar no es null antes de modificarlo
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);  // Esconder el ProgressBar en caso de error
+                }
             }
         });
     }
 }
-
