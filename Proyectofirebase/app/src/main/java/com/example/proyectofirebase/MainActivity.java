@@ -1,14 +1,17 @@
 package com.example.proyectofirebase;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(new DashboardFragment());
         }
 
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             Fragment selectedFragment = null;
 
             if (item.getItemId() == R.id.nav_dashboard) {
@@ -33,13 +36,18 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new FavouritesFragment();
             } else if (item.getItemId() == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
+            } else if (item.getItemId() == R.id.nav_logout) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, LoginFragment.class));
+                finish();
             }
 
             if (selectedFragment != null) {
                 replaceFragment(selectedFragment);
             }
-            return true;
+            return false;
         });
+
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -48,4 +56,11 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragmentContainer, fragment);
         transaction.commit();
     }
+    private void logoutUser() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, LoginFragment.class);
+        startActivity(intent);
+        finish();  // Cierra la actividad actual para evitar que el usuario regrese con "atrás"
+    }
+
 }
