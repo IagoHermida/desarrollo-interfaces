@@ -1,66 +1,51 @@
 package com.example.proyectofirebase;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ActivityMainBinding binding;  // DataBinding
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // Manejamos los eventos del menú lateral
-        binding.navigationView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.nav_dashboard:
-                    openFragment(new DashboardFragment());
-                    break;
-                case R.id.nav_favourites:
-                    openFragment(new FavouritesFragment());
-                    break;
-                case R.id.nav_profile:
-                    openFragment(new ProfileFragment());
-                    break;
-                case R.id.nav_logout:
-                    logoutUser();
-                    break;
+        // Cargar el fragmento de inicio por defecto
+        if (savedInstanceState == null) {
+            replaceFragment(new DashboardFragment());
+        }
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+
+            if (item.getItemId() == R.id.nav_dashboard) {
+                selectedFragment = new DashboardFragment();
+            } else if (item.getItemId() == R.id.nav_favorites) {
+                selectedFragment = new FavouritesFragment();
+            } else if (item.getItemId() == R.id.nav_profile) {
+                selectedFragment = new ProfileFragment();
             }
-            // Al pulsar en un ítem, cerramos el drawer
-            binding.drawerLayout.closeDrawers();
+
+            if (selectedFragment != null) {
+                replaceFragment(selectedFragment);
+            }
             return true;
         });
-
-        // Cargar por defecto el DashboardFragment
-        if (savedInstanceState == null) {
-            openFragment(new DashboardFragment());
-        }
     }
 
-    private void openFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .commit();
-    }
-
-    private void logoutUser() {
-        FirebaseAuth.getInstance().signOut();
-        // Redireccionar a LoginActivity
-        Intent intent = new Intent(this, LoginFragment.class);
-        startActivity(intent);
-        finish(); // Para que no pueda volver con el botón atrás
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragmentContainer, fragment);
+        transaction.commit();
     }
 }
