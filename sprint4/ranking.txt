@@ -1,0 +1,1 @@
+{'fácil': [{'name': 'iago', 'difficulty': 'fácil', 'moves': 27, 'date': '2024-11-18'}], 'medio': [], 'difícil': []}
