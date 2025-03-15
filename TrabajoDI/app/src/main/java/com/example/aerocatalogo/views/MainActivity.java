@@ -1,6 +1,8 @@
 package com.example.aerocatalogo.views;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -64,16 +66,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logoutUser() {
-        DashboardRepository dashboardRepository = new DashboardRepository();
-        dashboardRepository.cleanup();
-
-        getViewModelStore().clear(); // Limpiar ViewModel
+        // Primero, desloguear al usuario en Firebase
         FirebaseAuth.getInstance().signOut();
-        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
-        // Redireccionar a LoginActivity
+
+        // Eliminar el UID del usuario de SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences("AppConfig", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("userId");  // Eliminar el UID del usuario
+        editor.apply();  // Guardar cambios
+
+        // Redirigir a la pantalla de login
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        this.finish();
+        finish();  // Cerrar la MainActivity
     }
 
     private void clearFavorites() {

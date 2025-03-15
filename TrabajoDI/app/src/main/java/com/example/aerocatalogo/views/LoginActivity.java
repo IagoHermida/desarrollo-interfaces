@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.aerocatalogo.R;
 import com.example.aerocatalogo.viewmodels.LoginViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,18 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Verificar si ya hay un usuario autenticado
+        SharedPreferences sharedPreferences = getSharedPreferences("AppConfig", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", null);
+
+        if (userId != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
+            // Usuario ya autenticado, redirigir a MainActivity
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();  // Cerrar LoginActivity para evitar que el usuario regrese a ella
+            return;  // Salir del metodo onCreate
+        }
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
@@ -61,11 +73,19 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.isLoginSuccessful().observe(this, isSuccessful -> {
             if (isSuccessful != null && isSuccessful) {
                 Toast.makeText(LoginActivity.this, "Sesión iniciada", Toast.LENGTH_SHORT).show();
+
+                // Guardar el UID del usuario en SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                editor.apply();
+
+                // Redirigir a MainActivity
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
 
                 // Reseteamos el estado para evitar que se dispare al recrear la actividad
                 loginViewModel.resetLoginState();
+                finish();  // Finalizar la actividad actual (LoginActivity)
             }
         });
 
