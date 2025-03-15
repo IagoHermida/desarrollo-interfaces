@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.aerocatalogo.R;
 import com.example.aerocatalogo.databinding.ActivityMainBinding;
 import com.example.aerocatalogo.repositories.DashboardRepository;
+import com.example.aerocatalogo.repositories.FavoritesRepository;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new ProfileFragment()); // Permite regresar al fragmento anterior con el botón atrás
             } else if (id == R.id.nav_logout) {
                 logoutUser();
+            } else if (id == R.id.nav_clear_favorites) {
+                clearFavorites();
             }
+
 
             // Al pulsar en un ítem, cerramos el drawer
             binding.drawerLayout.closeDrawers();
@@ -71,4 +75,21 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         this.finish();
     }
+
+    private void clearFavorites() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FavoritesRepository favoritesRepository = new FavoritesRepository(userId);
+
+        favoritesRepository.clearFavorites().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "Favoritos eliminados", Toast.LENGTH_SHORT).show();
+                openFragment(new DashboardFragment()); // Recargar DashboardFragment
+            } else {
+                Toast.makeText(this, "Error al eliminar favoritos", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.drawerLayout.closeDrawers(); // Cerrar el menú
+    }
+
 }

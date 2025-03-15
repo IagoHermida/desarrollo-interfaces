@@ -99,4 +99,9 @@ public class FavoritesRepository {
 
         return isFavoriteLiveData;
     }
+
+    public Task<Void> clearFavorites() {
+        return userFavoritesRef.removeValue(); // Elimina todos los favoritos del usuario
+    }
+
 }

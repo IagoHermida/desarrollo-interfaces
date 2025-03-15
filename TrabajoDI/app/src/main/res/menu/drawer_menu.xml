@@ -10,6 +10,12 @@
         android:icon="@drawable/baseline_star_border_24" />
 
     <item
+        android:id="@+id/nav_clear_favorites"
+        android:title="Limpiar Favoritos"
+        android:icon="@drawable/ic_delete" />
+
+
+    <item
         android:id="@+id/nav_random"
         android:title="Aleatorio"
         android:icon="@drawable/baseline_change_circle_24" />
